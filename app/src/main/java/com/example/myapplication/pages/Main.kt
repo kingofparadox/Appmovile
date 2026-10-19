@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.componentes.Rutas
 import com.example.myapplication.componentes.nanbar
 import androidx.navigation.compose.NavHost
+import com.example.myapplication.dtos.Asignatura
 
 @Composable
 fun Main(){
@@ -27,7 +28,7 @@ fun Main(){
             modifier= Modifier.padding(innerPading)
         ){
             composable(Rutas.Asignaturas.route){
-                AsignaturasScreen()
+               HoemAsigntura(listaAsignaturas)
 
             }
             composable(Rutas.Perfil.route){
@@ -40,18 +41,13 @@ fun Main(){
     }
 }
 
-@Composable
-fun AsignaturasScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "Vista de Asignaturas",
-            style = MaterialTheme.typography.headlineMedium
-        )
-    }
-}
+val listaAsignaturas = listOf(
+    Asignatura(Id = "ASIG-01", Nombre = "Derecho Penal y Procesal Penal"),
+    Asignatura(Id = "ASIG-02", Nombre = "Doctrina y Ética Institucional"),
+    Asignatura(Id = "ASIG-03", Nombre = "Técnicas de Intervención Policial"),
+    Asignatura(Id = "ASIG-04", Nombre = "Legislación de Tránsito y Vialidad"),
+    Asignatura(Id = "ASIG-05", Nombre = "Prevención y Orden Público")
+)
 
 @Composable
 fun MensajesScreen() {
