@@ -15,6 +15,8 @@ import com.example.myapplication.componentes.Rutas
 import com.example.myapplication.componentes.nanbar
 import androidx.navigation.compose.NavHost
 import com.example.myapplication.dtos.Asignatura
+import com.example.myapplication.dtos.Chats
+import com.example.myapplication.dtos.Mensaje
 import com.example.myapplication.dtos.User
 
 @Composable
@@ -36,7 +38,7 @@ fun Main(){
                 ConfiguracionScreen()
             }
             composable(Rutas.Mensajes.route){
-                MensajesScreen()
+                mensajes(listaChats)
             }
         }
     }
@@ -126,18 +128,41 @@ val listaAsignaturas = listOf(
         ))
 )
 
-@Composable
-fun MensajesScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "Vista de Mensajes / Consultas",
-            style = MaterialTheme.typography.headlineMedium
-        )
-    }
-}
+val listaChats: MutableList<Chats> = mutableListOf(
+    Chats(
+        remitente = "Sgto. 1° Carlos González",
+        Asignatura = "Derecho Penal",
+        mensaje = Mensaje(
+            titulo = "Entrega de Caso Práctico",
+            cuerpo = "Hola alumno, recuerde enviar la resolución del caso antes de las 18:00.",
+            links = mutableListOf("https://esucar.cl/documentos/caso-penal-01.pdf")
+        ),
+        hora = "14:30",
+        Receptor = "Alumno"
+    ),
+    Chats(
+        remitente = "Cabo 2° María Soto",
+        Asignatura = "Prevención y Orden",
+        mensaje = Mensaje(
+            titulo = "Pauta de Patrullaje",
+            cuerpo = "Adjunto las directrices para la simulación táctica de mañana en el patio central.",
+            links = mutableListOf("https://esucar.cl/pautas/patrullaje-2026.pdf")
+        ),
+        hora = "12:15",
+        Receptor = "Alumno"
+    ),
+    Chats(
+        remitente = "Capitán Alejandro Pérez",
+        Asignatura = "Doctrina Institucional",
+        mensaje = Mensaje(
+            titulo = "Lectura Obligatoria",
+            cuerpo = "Revisar los capítulos indicados en el anexo para el control de lectura de la próxima semana.",
+            links = mutableListOf() // Lista vacía por ahora, lista para crecer
+        ),
+        hora = "Ayer",
+        Receptor = "Alumno"
+    )
+)
 
 @Composable
 fun ConfiguracionScreen() {

@@ -10,7 +10,7 @@ data class  Asignatura(val Id: String,
                        val Nombre: String,
                        var Profesor: MutableList<User>)
 
-data class  Cahts(val remitente: String,
+data class  Chats(val remitente: String,
                   val Asignatura: String,
                   val mensaje : Mensaje,
                   val hora:String,
