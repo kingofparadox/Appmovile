@@ -15,6 +15,7 @@ import com.example.myapplication.componentes.Rutas
 import com.example.myapplication.componentes.nanbar
 import androidx.navigation.compose.NavHost
 import com.example.myapplication.dtos.Asignatura
+import com.example.myapplication.dtos.User
 
 @Composable
 fun Main(){
@@ -42,11 +43,87 @@ fun Main(){
 }
 
 val listaAsignaturas = listOf(
-    Asignatura(Id = "ASIG-01", Nombre = "Derecho Penal y Procesal Penal"),
-    Asignatura(Id = "ASIG-02", Nombre = "Doctrina y Ética Institucional"),
-    Asignatura(Id = "ASIG-03", Nombre = "Técnicas de Intervención Policial"),
-    Asignatura(Id = "ASIG-04", Nombre = "Legislación de Tránsito y Vialidad"),
-    Asignatura(Id = "ASIG-05", Nombre = "Prevención y Orden Público")
+    Asignatura(Id = "ASIG-01", Nombre = "Derecho Penal y Procesal Penal",
+        mutableListOf(
+            User(
+                Nombre = "Carlos",
+                Apellido = "González",
+                Rut = "18.234.567-8",
+                rol = "Prodfesor"
+            ),
+            User(
+                Nombre = "María",
+                Apellido = "Soto",
+                Rut = "17.890.123-K",
+                rol = "Profesor"
+            )
+
+        ) )
+       ,
+    Asignatura(Id = "ASIG-02", Nombre = "Doctrina y Ética Institucional",
+        mutableListOf(
+            User(
+                Nombre = "Carlos",
+                Apellido = "González",
+                Rut = "18.234.567-8",
+                rol = "Prodfesor"
+            ),
+            User(
+                Nombre = "María",
+                Apellido = "Soto",
+                Rut = "17.890.123-K",
+                rol = "Profesor"
+            )
+
+        )),
+    Asignatura(Id = "ASIG-03", Nombre = "Técnicas de Intervención Policial",
+        mutableListOf(
+            User(
+                Nombre = "Carlos",
+                Apellido = "González",
+                Rut = "18.234.567-8",
+                rol = "Prodfesor"
+            ),
+            User(
+                Nombre = "María",
+                Apellido = "Soto",
+                Rut = "17.890.123-K",
+                rol = "Profesor"
+            )
+
+        )),
+    Asignatura(Id = "ASIG-04", Nombre = "Legislación de Tránsito y Vialidad",
+        mutableListOf(
+            User(
+                Nombre = "Carlos",
+                Apellido = "González",
+                Rut = "18.234.567-8",
+                rol = "Prodfesor"
+            ),
+            User(
+                Nombre = "María",
+                Apellido = "Soto",
+                Rut = "17.890.123-K",
+                rol = "Profesor"
+            )
+
+        )),
+    Asignatura(Id = "ASIG-05", Nombre = "Prevención y Orden Público",
+        mutableListOf(
+            User(
+                Nombre = "Carlos",
+                Apellido = "González",
+                Rut = "18.234.567-8",
+                rol = "Prodfesor"
+            ),
+            User(
+                Nombre = "María",
+                Apellido = "Soto",
+                Rut = "17.890.123-K",
+                rol = "Profesor"
+            )
+
+        ))
 )
 
 @Composable
