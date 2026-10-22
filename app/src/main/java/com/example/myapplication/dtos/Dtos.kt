@@ -8,7 +8,19 @@ data class  User( val Nombre: String,
 
 data class  Asignatura(val Id: String,
                        val Nombre: String,
-                       var Profesor: MutableList<User>)
+                       var Profesor: MutableList<User>,
+                       val contendio: ContenidoAsignatura)
+
+
+data class  Contenido(
+    val tipo: String,
+    val contenido: String
+)
+
+data class ContenidoAsignatura(
+    val id: String,
+    val contenidos: List<Contenido>
+)
 
 data class  Chats(val remitente: String,
                   val Asignatura: String,

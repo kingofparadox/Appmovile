@@ -31,7 +31,7 @@ fun mensajes(chats: List<Chats>){
         {
             items(chats){
                 chat->
-                ChatCard(chat)
+
             }
         }
     }
