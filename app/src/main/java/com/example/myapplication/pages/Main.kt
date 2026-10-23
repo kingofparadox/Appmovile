@@ -7,9 +7,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.composable
@@ -17,11 +14,11 @@ import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.componentes.Rutas
 import com.example.myapplication.componentes.nanbar
 import androidx.navigation.compose.NavHost
+import com.example.myapplication.componentes.cardAsignatura
 import com.example.myapplication.dtos.Asignatura
 import com.example.myapplication.dtos.Chats
 import com.example.myapplication.dtos.Mensaje
 import com.example.myapplication.dtos.User
-import androidx.compose.runtime.setValue
 
 @Composable
 fun Main(){
@@ -35,7 +32,7 @@ fun Main(){
             modifier= Modifier.padding(innerPading)
         ){
             composable(Rutas.Asignaturas.route){
-               HoemAsigntura(listaAsignaturas)
+                AsignaturaContainer(listaAsignaturasEjemplo)
 
             }
             composable(Rutas.Perfil.route){
@@ -48,88 +45,67 @@ fun Main(){
     }
 }
 
-val listaAsignaturas = listOf(
-    Asignatura(Id = "ASIG-01", Nombre = "Derecho Penal y Procesal Penal",
-        mutableListOf(
+val listaAsignaturasEjemplo = mutableListOf(
+    Asignatura(
+        Id = "ASIG-101",
+        Nombre = "Derecho Penal y Procesal",
+        Profesor = mutableListOf(
             User(
                 Nombre = "Carlos",
                 Apellido = "González",
-                Rut = "18.234.567-8",
-                rol = "Prodfesor"
+                Rut = "12.345.678-9",
+                rol = "Docente Principal"
+            )
+        ),
+        contendio = ContenidoAsignatura(
+            id = "ASIG-101",
+            contenidos = listOf(
+                Contenido(
+                    tipo = "texto",
+                    contenido = "Bienvenidos a la asignatura. Revisen el material de lectura obligatoria antes del primer certamen."
+                ),
+                Contenido(
+                    tipo = "link",
+                    contenido = "https://esucar.cl/material/codigo-penal-actualizado.pdf"
+                ),
+                Contenido(
+                    tipo = "link",
+                    contenido = "https://esucar.cl/casos/guia-procedimientos-policiales.docx"
+                )
+            )
+        )
+    ),
+    Asignatura(
+        Id = "ASIG-102",
+        Nombre = "Tácticas de Policial Operativa",
+        Profesor = mutableListOf(
+            User(
+                Nombre = "Marta",
+                Apellido = "Silva",
+                Rut = "9.876.543-2",
+                rol = "Instructora"
             ),
             User(
-                Nombre = "María",
-                Apellido = "Soto",
-                Rut = "17.890.123-K",
-                rol = "Profesor"
+                Nombre = "Roberto",
+                Apellido = "Morales",
+                Rut = "15.432.109-8",
+                rol = "Docente Ayudante"
             )
-
-        ) )
-       ,
-    Asignatura(Id = "ASIG-02", Nombre = "Doctrina y Ética Institucional",
-        mutableListOf(
-            User(
-                Nombre = "Carlos",
-                Apellido = "González",
-                Rut = "18.234.567-8",
-                rol = "Prodfesor"
-            ),
-            User(
-                Nombre = "María",
-                Apellido = "Soto",
-                Rut = "17.890.123-K",
-                rol = "Profesor"
+        ),
+        contendio = ContenidoAsignatura(
+            id = "ASIG-102",
+            contenidos = listOf(
+                Contenido(
+                    tipo = "texto",
+                    contenido = "Recordatorio: La evaluación práctica en terreno se realizará el próximo viernes a las 08:30 hrs."
+                ),
+                Contenido(
+                    tipo = "link",
+                    contenido = "https://esucar.cl/videos/protocolo-intervencion-urbana.mp4"
+                )
             )
-
-        )),
-    Asignatura(Id = "ASIG-03", Nombre = "Técnicas de Intervención Policial",
-        mutableListOf(
-            User(
-                Nombre = "Carlos",
-                Apellido = "González",
-                Rut = "18.234.567-8",
-                rol = "Prodfesor"
-            ),
-            User(
-                Nombre = "María",
-                Apellido = "Soto",
-                Rut = "17.890.123-K",
-                rol = "Profesor"
-            )
-
-        )),
-    Asignatura(Id = "ASIG-04", Nombre = "Legislación de Tránsito y Vialidad",
-        mutableListOf(
-            User(
-                Nombre = "Carlos",
-                Apellido = "González",
-                Rut = "18.234.567-8",
-                rol = "Prodfesor"
-            ),
-            User(
-                Nombre = "María",
-                Apellido = "Soto",
-                Rut = "17.890.123-K",
-                rol = "Profesor"
-            )
-
-        )),
-    Asignatura(Id = "ASIG-05", Nombre = "Prevención y Orden Público",
-        mutableListOf(
-            User(
-                Nombre = "Carlos",
-                Apellido = "González",
-                Rut = "18.234.567-8",
-                rol = "Prodfesor"
-            ),
-            User(
-                Nombre = "María",
-                Apellido = "Soto",
-                Rut = "17.890.123-K",
-                rol = "Profesor"
-            )
-
-        ))
+        )
+    )
 )
 
 val listaChats: MutableList<Chats> = mutableListOf(
@@ -179,17 +155,4 @@ fun ConfiguracionScreen() {
             style = MaterialTheme.typography.headlineMedium
         )
     }
-}
-@Composable
-fun MensajesRu(listtaChat:List<Chats>){
-    var chatsSeleccionado by remember { mutableStateOf<Chats?>(null) }
-    if (chatsSeleccionado==null ){mensajes(
-        listaChats,
-        {chatPulsado-> chatsSeleccionado = chatPulsado}
-
-    ) } else {
-        DetalleMensaje(chatsSeleccionado!!,
-            {chatsSeleccionado= null})
-    }
-
 }
