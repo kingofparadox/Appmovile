@@ -17,7 +17,7 @@ import com.example.myapplication.componentes.ChatCard
 import com.example.myapplication.dtos.Chats
 
 @Composable
-fun mensajes(chats: List<Chats>){
+fun mensajes(chats: List<Chats>, onChatClik: (Chats)-> Unit){
     Box(
         Modifier.fillMaxSize()
             .background(Color(242,242,242)),
@@ -31,7 +31,7 @@ fun mensajes(chats: List<Chats>){
         {
             items(chats){
                 chat->
-                ChatCard(chat)
+                ChatCard(chat, {onChatClik(chat)})
             }
         }
     }

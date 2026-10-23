@@ -7,6 +7,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.composable
@@ -18,6 +21,7 @@ import com.example.myapplication.dtos.Asignatura
 import com.example.myapplication.dtos.Chats
 import com.example.myapplication.dtos.Mensaje
 import com.example.myapplication.dtos.User
+import androidx.compose.runtime.setValue
 
 @Composable
 fun Main(){
@@ -38,7 +42,7 @@ fun Main(){
                 ConfiguracionScreen()
             }
             composable(Rutas.Mensajes.route){
-                mensajes(listaChats)
+                MensajesRu(listaChats)
             }
         }
     }
@@ -175,4 +179,17 @@ fun ConfiguracionScreen() {
             style = MaterialTheme.typography.headlineMedium
         )
     }
+}
+@Composable
+fun MensajesRu(listtaChat:List<Chats>){
+    var chatsSeleccionado by remember { mutableStateOf<Chats?>(null) }
+    if (chatsSeleccionado==null ){mensajes(
+        listaChats,
+        {chatPulsado-> chatsSeleccionado = chatPulsado}
+
+    ) } else {
+        DetalleMensaje(chatsSeleccionado!!,
+            {chatsSeleccionado= null})
+    }
+
 }
