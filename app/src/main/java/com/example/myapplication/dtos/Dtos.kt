@@ -34,3 +34,9 @@ data class Mensaje(
     val cuerpo: String,
     val links: MutableList<String> = mutableListOf()
 )
+
+data class  Credencial(
+    val rut: String,
+    val password: String,
+    val user: User
+)

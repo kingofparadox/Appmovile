@@ -1,9 +1,19 @@
 package com.example.myapplication.pages
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,19 +23,23 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.componentes.Rutas
 import com.example.myapplication.componentes.nanbar
 import androidx.navigation.compose.NavHost
-
-import com.example.myapplication.componentes.contenidoRender
+import com.example.myapplication.componentes.logicaLogin
 import com.example.myapplication.dtos.Asignatura
 import com.example.myapplication.dtos.Chats
-import com.example.myapplication.dtos.Contenido
-import com.example.myapplication.dtos.ContenidoAsignatura
-import com.example.myapplication.dtos.Mensaje
+import  com.example.myapplication.data.JsonData
 import com.example.myapplication.dtos.User
+
 
 @Composable
 fun Main(){
@@ -39,117 +53,20 @@ fun Main(){
             modifier= Modifier.padding(innerPading)
         ){
             composable(Rutas.Asignaturas.route){
-                AsignaturasRu(listaAsignaturasEjemplo)
+                AsignaturasRu(JsonData.listaAsignaturasEjemplo)
 
             }
             composable(Rutas.Perfil.route){
                 ConfiguracionScreen()
             }
             composable(Rutas.Mensajes.route){
-                MensajesRu(listaChats)
+                MensajesRu(JsonData.listaChats)
             }
         }
     }
 }
 
-val listaAsignaturasEjemplo = mutableListOf(
-    Asignatura(
-        Id = "ASIG-101",
-        Nombre = "Derecho Penal y Procesal",
-        Profesor = mutableListOf(
-            User(
-                Nombre = "Carlos",
-                Apellido = "González",
-                Rut = "12.345.678-9",
-                rol = "Docente Principal"
-            )
-        ),
-        contendio = ContenidoAsignatura(
-            id = "ASIG-101",
-            contenidos = listOf(
-                Contenido(
-                    tipo = "texto",
-                    contenido = "Bienvenidos a la asignatura. Revisen el material de lectura obligatoria antes del primer certamen."
-                ),
-                Contenido(
-                    tipo = "link",
-                    contenido = "https://esucar.cl/material/codigo-penal-actualizado.pdf"
-                ),
-                Contenido(
-                    tipo = "link",
-                    contenido = "https://esucar.cl/casos/guia-procedimientos-policiales.docx"
-                )
-            )
-        )
-    ),
-    Asignatura(
-        Id = "ASIG-102",
-        Nombre = "Tácticas de Policial Operativa",
-        Profesor = mutableListOf(
-            User(
-                Nombre = "Marta",
-                Apellido = "Silva",
-                Rut = "9.876.543-2",
-                rol = "Instructora"
-            ),
-            User(
-                Nombre = "Roberto",
-                Apellido = "Morales",
-                Rut = "15.432.109-8",
-                rol = "Docente Ayudante"
-            )
-        ),
-        contendio = ContenidoAsignatura(
-            id = "ASIG-102",
-            contenidos = listOf(
-                Contenido(
-                    tipo = "texto",
-                    contenido = "Recordatorio: La evaluación práctica en terreno se realizará el próximo viernes a las 08:30 hrs."
-                ),
-                Contenido(
-                    tipo = "link",
-                    contenido = "https://esucar.cl/videos/protocolo-intervencion-urbana.mp4"
-                )
-            )
-        )
-    )
-)
 
-val listaChats: MutableList<Chats> = mutableListOf(
-    Chats(
-        remitente = "Sgto. 1° Carlos González",
-        Asignatura = "Derecho Penal",
-        mensaje = Mensaje(
-            titulo = "Entrega de Caso Práctico",
-            cuerpo = "Hola alumno, recuerde enviar la resolución del caso antes de las 18:00.",
-            links = mutableListOf("https://esucar.cl/documentos/caso-penal-01.pdf")
-        ),
-        hora = "14:30",
-        Receptor = "Alumno"
-    ),
-    Chats(
-        remitente = "Cabo 2° María Soto",
-        Asignatura = "Prevención y Orden",
-        mensaje = Mensaje(
-            titulo = "Pauta de Patrullaje",
-            cuerpo = "Adjunto las directrices para la simulación táctica de mañana en el patio central.",
-            links = mutableListOf("https://esucar.cl/pautas/patrullaje-2026.pdf")
-        ),
-        hora = "12:15",
-        Receptor = "Alumno"
-    ),
-    Chats(
-        remitente = "Capitán Alejandro Pérez",
-        Asignatura = "Doctrina Institucional",
-        mensaje = Mensaje(
-            titulo = "Lectura Obligatoria",
-            cuerpo = "Revisar los capítulos indicados en el anexo para el control de lectura de la próxima semana.",
-            links = mutableListOf() // Lista vacía por ahora, lista para crecer
-        ),
-        hora = "Ayer",
-        Receptor = "Alumno"
-    )
-)
 
 @Composable
 fun ConfiguracionScreen() {
@@ -168,7 +85,7 @@ fun ConfiguracionScreen() {
 fun MensajesRu(listtaChat:List<Chats>){
     var chatsSeleccionado by remember  { mutableStateOf<Chats?>(null) }
     if (chatsSeleccionado==null ){mensajes(
-        listaChats,
+        listtaChat,
         {chatPulsado-> chatsSeleccionado = chatPulsado}
 
     ) } else {
@@ -200,4 +117,54 @@ fun AsignaturasRu(listaAsignaturas: List<Asignatura>) {
             }
         )
     }
+}
+@Composable
+fun  vistaLog(
+    vistaLogin: logicaLogin,
+    onLogin:(User)-> Unit
+    ){
+    Box(
+        Modifier.fillMaxSize()
+            .background(Color(242,242,242)),
+        Alignment.Center
+    ){
+        Card(
+            Modifier.fillMaxSize(0.88f)
+                .wrapContentHeight(),
+            colors = CardDefaults.cardColors(Color.White),
+            elevation = CardDefaults.cardElevation(4.dp),
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Column(
+                Modifier.fillMaxWidth().padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    "Acceso Institucional",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold,
+                    color= Color(27,94,32)
+                )
+                Spacer( Modifier.height(24.dp))
+
+                Text(
+                    text = "Ingrese su RUT y contraseña para continuar",
+                    fontSize = 12.sp,
+                    color = Color.Gray
+                )
+
+                OutlinedTextField(
+                    value = vistaLogin.rutInput,
+                    onValueChange = { vistaLogin.actualizaRut(it) },
+
+
+                )
+
+                Spacer( Modifier.height(22.dp))
+
+
+            }
+        }
+    }
+
 }
