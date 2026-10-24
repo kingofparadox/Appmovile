@@ -7,6 +7,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.composable
@@ -14,9 +18,12 @@ import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.componentes.Rutas
 import com.example.myapplication.componentes.nanbar
 import androidx.navigation.compose.NavHost
-import com.example.myapplication.componentes.cardAsignatura
+
+import com.example.myapplication.componentes.contenidoRender
 import com.example.myapplication.dtos.Asignatura
 import com.example.myapplication.dtos.Chats
+import com.example.myapplication.dtos.Contenido
+import com.example.myapplication.dtos.ContenidoAsignatura
 import com.example.myapplication.dtos.Mensaje
 import com.example.myapplication.dtos.User
 
@@ -32,7 +39,7 @@ fun Main(){
             modifier= Modifier.padding(innerPading)
         ){
             composable(Rutas.Asignaturas.route){
-                AsignaturaContainer(listaAsignaturasEjemplo)
+                AsignaturasRu(listaAsignaturasEjemplo)
 
             }
             composable(Rutas.Perfil.route){
@@ -153,6 +160,44 @@ fun ConfiguracionScreen() {
         Text(
             text = "Vista de Configuración",
             style = MaterialTheme.typography.headlineMedium
+        )
+    }
+}
+
+@Composable
+fun MensajesRu(listtaChat:List<Chats>){
+    var chatsSeleccionado by remember  { mutableStateOf<Chats?>(null) }
+    if (chatsSeleccionado==null ){mensajes(
+        listaChats,
+        {chatPulsado-> chatsSeleccionado = chatPulsado}
+
+    ) } else {
+        DetalleMensaje(chatsSeleccionado!!,
+            {chatsSeleccionado= null})
+    }
+
+}
+@Composable
+fun AsignaturasRu(listaAsignaturas: List<Asignatura>) {
+    // Estado para saber qué asignatura está seleccionada (nulo al inicio)
+    var asignaturaSeleccionada by remember { mutableStateOf<Asignatura?>(null) }
+
+    if (asignaturaSeleccionada == null) {
+        // Muestra la lista general de asignaturas (corregido el nombre a HomeAsignatura)
+        HoemAsigntura (
+            listaAsignaturas,
+            { asignaturaPulsada ->
+                asignaturaSeleccionada = asignaturaPulsada
+            }
+        )
+    } else {
+        // Muestra el detalle de la asignatura seleccionada usando 'onVolver'
+        DetalleAsignaturaScreen (
+            asignaturaSeleccionada!!,
+             asignaturaSeleccionada!!.contendio
+            ,{
+                asignaturaSeleccionada = null // Esto limpia el estado y regresa a la lista
+            }
         )
     }
 }
