@@ -30,7 +30,7 @@ fun DetalleAsignaturaScreen(
     onVolver: () -> Unit
 ) {
     // 1. Control de permisos por rol
-    val puedeGestionarContenido = usuarioLogueado.rol.contains("Profesor", ignoreCase = true) ||
+    val puedeGestionarContenido = usuarioLogueado.rol.contains("DOCENTE", ignoreCase = true) ||
             usuarioLogueado.rol.contains("Admin", ignoreCase = true)
 
     // 2. Lista de contenidos reactiva en memoria volátil
