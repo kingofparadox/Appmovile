@@ -1,5 +1,6 @@
 package com.example.myapplication.pages
 
+import android.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -26,9 +29,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.componentes.Rutas
@@ -39,10 +44,27 @@ import com.example.myapplication.dtos.Asignatura
 import com.example.myapplication.dtos.Chats
 import  com.example.myapplication.data.JsonData
 import com.example.myapplication.dtos.User
-
+import java.security.GuardedObject
 
 @Composable
 fun Main(){
+    val logVista: logicaLogin = viewModel()
+    var usuarioLogeado by remember { mutableStateOf<User?>(null) }
+    if(usuarioLogeado==null){
+        VistaLog (logVista,
+            {
+                usuario->
+                usuarioLogeado =usuario
+            })
+    }else{
+        inicio(usuarioLogeado!!){
+            usuarioLogeado = null
+        }
+    }
+}
+
+@Composable
+fun inicio(usuario: User,onLogut:()-> Unit){
     val navController= rememberNavController()
     Scaffold(
         bottomBar = { nanbar(navController=navController) }
@@ -57,7 +79,11 @@ fun Main(){
 
             }
             composable(Rutas.Perfil.route){
-                ConfiguracionScreen()
+               PerfilVita(
+                   usuario,
+                   onLogut,
+                   {upadaTeUser->}
+               )
             }
             composable(Rutas.Mensajes.route){
                 MensajesRu(JsonData.listaChats)
@@ -117,54 +143,4 @@ fun AsignaturasRu(listaAsignaturas: List<Asignatura>) {
             }
         )
     }
-}
-@Composable
-fun  vistaLog(
-    vistaLogin: logicaLogin,
-    onLogin:(User)-> Unit
-    ){
-    Box(
-        Modifier.fillMaxSize()
-            .background(Color(242,242,242)),
-        Alignment.Center
-    ){
-        Card(
-            Modifier.fillMaxSize(0.88f)
-                .wrapContentHeight(),
-            colors = CardDefaults.cardColors(Color.White),
-            elevation = CardDefaults.cardElevation(4.dp),
-            shape = RoundedCornerShape(16.dp)
-        ) {
-            Column(
-                Modifier.fillMaxWidth().padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    "Acceso Institucional",
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold,
-                    color= Color(27,94,32)
-                )
-                Spacer( Modifier.height(24.dp))
-
-                Text(
-                    text = "Ingrese su RUT y contraseña para continuar",
-                    fontSize = 12.sp,
-                    color = Color.Gray
-                )
-
-                OutlinedTextField(
-                    value = vistaLogin.rutInput,
-                    onValueChange = { vistaLogin.actualizaRut(it) },
-
-
-                )
-
-                Spacer( Modifier.height(22.dp))
-
-
-            }
-        }
-    }
-
 }

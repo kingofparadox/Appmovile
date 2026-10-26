@@ -16,24 +16,26 @@ import androidx.compose.foundation.lazy.items
 import com.example.myapplication.componentes.ChatCard
 import com.example.myapplication.dtos.Chats
 
+
 @Composable
-fun mensajes(chats: List<Chats>, onChatClik: (Chats)-> Unit){
+fun mensajes(chats: List<Chats>, onChatClik: (Chats) -> Unit) {
     Box(
-        Modifier.fillMaxSize()
-            .background(Color(242,242,242)),
-         Alignment.Center
-    ){
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(red = 242, green = 242, blue = 242)),
+        contentAlignment = Alignment.Center
+    ) {
         LazyColumn(
-            Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(20.dp),
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(all = 40.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
-        )
-        {
-            items(chats){
-                chat->
-                ChatCard(chat, {onChatClik(chat)})
+        ) {
+            items(chats) { chat ->
+                ChatCard(
+                    chat = chat,
+                    onClick = { onChatClik(chat) }
+                )
             }
         }
     }
-
 }
