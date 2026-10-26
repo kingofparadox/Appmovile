@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -51,14 +53,15 @@ fun  PerfilVita(
         Card (
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(40.dp), // Mantiene la consistencia de márgenes de Asignaturas y Mensajes
+                .padding(40.dp),
             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White)
         ) {
             Column (
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(24.dp),
+                    .padding(24.dp)
+                    .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
@@ -111,7 +114,8 @@ fun  PerfilVita(
             }
         }
     }
-}@Composable
+}
+@Composable
 fun PerfilStaticItem(label: String, value: String) {
     Row(
         modifier = Modifier.fillMaxWidth(),

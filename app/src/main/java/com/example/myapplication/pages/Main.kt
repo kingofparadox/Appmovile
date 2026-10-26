@@ -15,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -29,21 +30,19 @@ import com.example.myapplication.dtos.User
 
 
 @Composable
-fun Main(){
+fun Main(sessionViewModel: SessionViewModel = viewModel()) {
     val logVista: logicaLogin = viewModel()
-    var usuarioLogeado by rememberSaveable { mutableStateOf<User?>(null) }
-    if(usuarioLogeado==null){
-        VistaLog (logVista,
-            {
-                usuario->
-                usuarioLogeado =usuario
-            })
-    }else{
-        inicio(usuarioLogeado!!){
-            usuarioLogeado = null
+    val usuario = sessionViewModel.usuarioLogeado
+    if (usuario == null) {
+        VistaLog(logVista) { usuarioAutenticado ->
+            sessionViewModel.iniciarSesion(usuarioAutenticado)
+        }}
+    else{
+            inicio(usuario) {
+                sessionViewModel.cerrarSesion()
+            }
         }
     }
-}
 
 @Composable
 fun inicio(usuario: User,onLogut:()-> Unit){
@@ -75,20 +74,6 @@ fun inicio(usuario: User,onLogut:()-> Unit){
 }
 
 
-
-@Composable
-fun ConfiguracionScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "Vista de Configuración",
-            style = MaterialTheme.typography.headlineMedium
-        )
-    }
-}
-
 @Composable
 fun MensajesRu(listtaChat:List<Chats>){
     var chatsSeleccionado by remember  { mutableStateOf<Chats?>(null) }
@@ -113,10 +98,12 @@ fun AsignaturasRu(
     if (asignaturaSeleccionada == null) {
         // Muestra la lista general de asignaturas
         HoemAsigntura(
-            asignaturas = listaAsignaturas,
+            asignaturasIniciales = listaAsignaturas,
             onAsignatura = { asignaturaPulsada ->
                 asignaturaSeleccionada = asignaturaPulsada
-            }
+            },
+            usuarioLogueado = usuarioLogueado
+
         )
     } else {
         // Muestra el detalle de la asignatura seleccionada
@@ -128,5 +115,18 @@ fun AsignaturasRu(
                 asignaturaSeleccionada = null // Limpia el estado y regresa a la lista
             }
         )
+    }
+}
+
+class SessionViewModel : ViewModel() {
+    var usuarioLogeado by mutableStateOf<User?>(null)
+        private set
+
+    fun iniciarSesion(user: User) {
+        usuarioLogeado = user
+    }
+
+    fun cerrarSesion() {
+        usuarioLogeado = null
     }
 }
