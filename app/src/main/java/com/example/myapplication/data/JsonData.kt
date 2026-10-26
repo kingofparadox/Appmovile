@@ -23,17 +23,17 @@ object JsonData {
             ),
             contendio = ContenidoAsignatura(
                 id = "ASIG-101",
-                contenidos = listOf(
+                contenidos = mutableListOf(
                     Contenido(
-                        tipo = "texto",
+                        tipo = "TEXTO",
                         contenido = "Bienvenidos a la asignatura. Revisen el material de lectura obligatoria antes del primer certamen."
                     ),
                     Contenido(
-                        tipo = "link",
+                        tipo = "LINK",
                         contenido = "https://esucar.cl/material/codigo-penal-actualizado.pdf"
                     ),
                     Contenido(
-                        tipo = "link",
+                        tipo = "LINK",
                         contenido = "https://esucar.cl/casos/guia-procedimientos-policiales.docx"
                     )
                 )
@@ -58,13 +58,13 @@ object JsonData {
             ),
             contendio = ContenidoAsignatura(
                 id = "ASIG-102",
-                contenidos = listOf(
+                contenidos = mutableListOf(
                     Contenido(
-                        tipo = "texto",
+                        tipo = "TEXTO",
                         contenido = "Recordatorio: La evaluación práctica en terreno se realizará el próximo viernes a las 08:30 hrs."
                     ),
                     Contenido(
-                        tipo = "link",
+                        tipo = "LINK",
                         contenido = "https://esucar.cl/videos/protocolo-intervencion-urbana.mp4"
                     )
                 )

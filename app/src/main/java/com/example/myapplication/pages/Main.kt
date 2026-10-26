@@ -75,7 +75,7 @@ fun inicio(usuario: User,onLogut:()-> Unit){
             modifier= Modifier.padding(innerPading)
         ){
             composable(Rutas.Asignaturas.route){
-                AsignaturasRu(JsonData.listaAsignaturasEjemplo)
+                AsignaturasRu(JsonData.listaAsignaturasEjemplo,usuario)
 
             }
             composable(Rutas.Perfil.route){
@@ -121,25 +121,29 @@ fun MensajesRu(listtaChat:List<Chats>){
 
 }
 @Composable
-fun AsignaturasRu(listaAsignaturas: List<Asignatura>) {
+fun AsignaturasRu(
+    listaAsignaturas: List<Asignatura>,
+    usuarioLogueado: User // <-- Recibimos el usuario autenticado
+) {
     // Estado para saber qué asignatura está seleccionada (nulo al inicio)
     var asignaturaSeleccionada by remember { mutableStateOf<Asignatura?>(null) }
 
     if (asignaturaSeleccionada == null) {
-        // Muestra la lista general de asignaturas (corregido el nombre a HomeAsignatura)
-        HoemAsigntura (
-            listaAsignaturas,
-            { asignaturaPulsada ->
+        // Muestra la lista general de asignaturas
+        HoemAsigntura(
+            asignaturas = listaAsignaturas,
+            onAsignatura = { asignaturaPulsada ->
                 asignaturaSeleccionada = asignaturaPulsada
             }
         )
     } else {
-        // Muestra el detalle de la asignatura seleccionada usando 'onVolver'
-        DetalleAsignaturaScreen (
-            asignaturaSeleccionada!!,
-             asignaturaSeleccionada!!.contendio
-            ,{
-                asignaturaSeleccionada = null // Esto limpia el estado y regresa a la lista
+        // Muestra el detalle de la asignatura seleccionada
+        DetalleAsignaturaScreen(
+            asignatura = asignaturaSeleccionada!!,
+            contenidoAsignatura = asignaturaSeleccionada!!.contendio,
+            usuarioLogueado = usuarioLogueado, // <-- Se lo pasamos aquí
+            onVolver = {
+                asignaturaSeleccionada = null // Limpia el estado y regresa a la lista
             }
         )
     }

@@ -1,7 +1,6 @@
 package com.example.myapplication.pages
 
-import android.R
-import android.text.Layout
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -111,12 +110,24 @@ fun DetalleMensaje(
                 )
                 Spacer(Modifier.height(12.dp))
 
-                Text(
-                    text = chat.mensaje.cuerpo,
-                    fontSize = 14.sp,
-                    color = Color(51, 51, 51),
-                    lineHeight = 20.sp
-                )
+                // --- CUERPO EN FORMATO DE CARTA ---
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFFFAF9F6)), // Tono tipo carta/papel sutil
+                    shape = RoundedCornerShape(8.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        Text(
+                            text = chat.mensaje.cuerpo,
+                            fontSize = 14.sp,
+                            color = Color(51, 51, 51),
+                            lineHeight = 22.sp
+                        )
+                    }
+                }
 
                 // CORREGIDO: Usamos isNotEmpty() para que se muestren solo si hay elementos
                 if (chat.mensaje.links.isNotEmpty()) {
@@ -153,7 +164,7 @@ fun DetalleMensaje(
 
         Row(
             Modifier.fillMaxWidth(),
-            Arrangement.spacedBy(  8.dp ),
+            Arrangement.spacedBy(8.dp),
             Alignment.CenterVertically
         ) {
             Box(Modifier.weight(1f)){

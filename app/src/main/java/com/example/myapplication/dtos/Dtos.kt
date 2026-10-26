@@ -19,7 +19,7 @@ data class  Contenido(
 
 data class ContenidoAsignatura(
     val id: String,
-    val contenidos: List<Contenido>
+    val contenidos: MutableList<Contenido> = mutableListOf()
 )
 
 data class  Chats(val remitente: String,
